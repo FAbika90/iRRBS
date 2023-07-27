@@ -1,4 +1,3 @@
-# iRRBS
 # iRRBS tool
 ## Overview
 3’ ends of RRBS reads overlapping with genomic MspI sites include non-methylated cytosines introduced through end-repair. These cytosines are not recognized by Trim Galore and are therefore not trimmed but considered during methylation calling. To avoid methylation bias we developed iRRBS, which identifies and hides end-repaired cytosines from methylation calling.
