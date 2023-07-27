@@ -1,2 +1,2 @@
 from iRRBS.irrbs_pipeline import IPipeline
-from iRRBS.suppres import Suppres
+from iRRBS.suppress import Suppress
