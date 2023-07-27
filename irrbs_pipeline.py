@@ -6,7 +6,6 @@ import subprocess
 import array
 import shutil
 import argparse
-import logging
 
 class IPipeline:
     
