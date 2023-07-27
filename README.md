@@ -10,10 +10,10 @@
 
 ## Installation
 iRRBS can be installed by pip:
-`code` pip install iRRBS
+`pip install iRRBS`
 
 ## Usage
-`code` python -m iRRBS -i <infile> -c <chromsizes> -g <genome> -o <outputfile>
+`python -m iRRBS -i <infile> -c <chromsizes> -g <genome> -o <outputfile>`
 
 To run iRRBS the following input parameters are required in this order:
 - infile (-i): path to input sorted BAM file
