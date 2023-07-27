@@ -10,7 +10,7 @@ setup(
 name=”iRRBS”,
 version=”0.0.1",
 description=”RRBS tool for deleting artificial cytosins”,
-long_description=open(“README.txt”).read() + “\n\n” + open(“CHANGELOG.txt”).read(),
+long_description=open(“README.md”).read() + “\n\n” + open(“CHANGELOG.txt”).read(),
 url=”https://github.com/fothia/iRRBS”,
 author=”Abel Fothi”,
 author_email=”fothi.abel@gmail.com”,
