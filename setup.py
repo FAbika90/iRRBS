@@ -11,7 +11,7 @@ classifiers = [
 ]
 setup(
 name = 'iRRBS',
-version = '0.0.1',
+version = '0.1.0',
 description = 'RRBS tool for deleting artificial cytosins',
 long_description = (this_directory / "README.md").read_text(),
 url = 'https://github.com/fothia/iRRBS',
