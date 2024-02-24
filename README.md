@@ -33,21 +33,21 @@ Before you begin, ensure you have the following installed:
     - samtools
     - bedtools
     
-# Test Data Preparation
+### Test Data Preparation
 
     Unzip the rn6 chromosome 20 fasta file
 
     The rn6 (Rattus norvegicus) chromosome 20 fasta file comes compressed. Use the following command to decompress it:
     `gunzip rn6_chr20.fa.gz`
 
-# Run iRRBS
+### Run iRRBS
 
     With the data prepared, run the iRRBS tool using the command below. Test data can be found in the "test_data" folder. 
     This command specifies the input BAM file, chromosome sizes file, genome fasta file, and the output file names.
 
     `python -m iRRBS -i test_data.bam -c rn6_chr20.chrom.sizes -g rn6_chr20.fa -o test_data_out_test.bam`
 
-# Log File
+### Log File
 
     After running the test, a log file named test_data_out_test.log will be generated. This file contains information about the summary statistics of the analysis.
     
