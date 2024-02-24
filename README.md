@@ -12,6 +12,7 @@ improve-RRBS can be installed by pip:
 `pip install iRRBS`
 
 ## Usage
+
 `python -m iRRBS -i <infile> -c <chromsizes> -g <genome> -o <outputfile>`
 
 To run improve-RRBS the following input parameters are required in this order:
@@ -22,7 +23,6 @@ To run improve-RRBS the following input parameters are required in this order:
 
 
 ## Setup and Test Instructions
-
 This guide walks you through the process of testing the iRRBS (IMPROVE-RRBS) analysis tool using a specific genomic data file. 
 Follow these steps to ensure everything is set up and running correctly.
 Prerequisites
