@@ -38,6 +38,7 @@ Before you begin, ensure you have the following installed:
 Unzip the rn6 chromosome 20 fasta file
 
 The rn6 (Rattus norvegicus) chromosome 20 fasta file comes compressed. Use the following command to decompress it:
+
 `gunzip rn6_chr20.fa.gz`
 
 ### Run iRRBS
