@@ -13,7 +13,7 @@ improve-RRBS can be installed by pip:
 
 ## Usage
 
-`python -m iRRBS -i <infile> -c <chromsizes> -g <genome> -o <outputfile>`
+`python -m iRRBS.run_irrbs -i <infile> -c <chromsizes> -g <genome> -o <outputfile>`
 
 To run improve-RRBS the following input parameters are required in this order:
 - infile (-i): path to input sorted BAM file
@@ -46,7 +46,7 @@ The rn6 (Rattus norvegicus) chromosome 20 fasta file comes compressed. Use the f
 With the data prepared, run the iRRBS tool using the command below. Test data can be found in the "test_data" folder. 
 This command specifies the input BAM file, chromosome sizes file, genome fasta file, and the output file names.
 
-`python -m iRRBS -i test_data.bam -c rn6_chr20.chrom.sizes -g rn6_chr20.fa -o test_data_out_test.bam`
+`python -m iRRBS.run_irrbs -i test_data.bam -c rn6_chr20.chrom.sizes -g rn6_chr20.fa -o test_data_out_test.bam`
 
 ### Log File
 
