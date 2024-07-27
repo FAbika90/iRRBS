@@ -16,7 +16,7 @@ improve-RRBS can be installed by pip:
 `python -m iRRBS.run_irrbs -i <infile> -c <chromsizes> -g <genome> -o <outputfile>`
 
 To run improve-RRBS the following input parameters are required in this order:
-- infile (-i): path to input sorted BAM file
+- infile (-i): path to input sorted BAM file with an associated index file
 - chromsizes (-c): path to chrom.sizes file to define the chromosome lengths for a given genome
 - genome (-g): path to genome file
 - outfile (-o): name for the output file
