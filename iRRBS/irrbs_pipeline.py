@@ -142,7 +142,7 @@ class IPipeline:
             ModReads.write(read)
         ModReads.close()
         msp1bamfile.close()
-        os.remove(self.infile.replace('.bam', '_msp1.bam'))
+        os.remove(self.infile.replace('.bam', '_msp1.bam', '_msp1.bam.bai'))
         
     def file_merge(self):
         if self.PE != 0:
