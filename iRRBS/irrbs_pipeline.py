@@ -132,7 +132,7 @@ class IPipeline:
         for read in msp1bamfile.fetch():
             # Retrieve query qualities and modify the sequence for forward and reverse reads
             quals = read.query_qualities
-            if read.is_forward:
+            if not read.is_reverse:
                 # Modify the sequence and qualities for forward reads (last 3 bases)
                 read.query_sequence = read.query_sequence[:-3] + 'NNN'
                 read.query_qualities = quals[:-3] + array.array('B', [0, 0, 0])
@@ -154,7 +154,7 @@ class IPipeline:
             # Handle MD tag (mismatch string)
             try:
                 md_tag = read.get_tag('MD')
-                if read.is_forward:
+                if not read.is_reverse:
                     new_tags.append(('MD', md_tag[:-3] + '...'))
                 else:
                     new_tags.append(('MD', '...' + md_tag[3:]))
@@ -164,7 +164,7 @@ class IPipeline:
             # Handle XM tag (custom tag)
             try:
                 xm_tag = read.get_tag('XM')
-                if read.is_forward:
+                if not read.is_reverse:
                     new_tags.append(('XM', xm_tag[:-3] + '...'))
                 else:
                     new_tags.append(('XM', '...' + xm_tag[3:]))
