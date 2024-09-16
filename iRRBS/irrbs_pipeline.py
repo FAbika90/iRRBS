@@ -106,12 +106,12 @@ class IPipeline:
     def logging(self):
         # Logging
         with open(self.outfile.replace('.bam', '.log'), 'w') as logs:
-            logs.write('Number of unique MspI reads:\n')
+            logs.write('Unique MspI site-aligned reads:\n')
             logs.write(str(len(pybedtools.BedTool(self.infile.replace('.bam', '_blocks.bed')))))
             logs.write('\n')
-            logs.write('Number of MspI reads:\n')
+            logs.write('Total MspI site-aligned reads:\n')
             logs.write(str(pysam.view('-c', '-F', '4', self.infile.replace('.bam', '_msp1.bam'))))
-            logs.write('Number of all reads:\n')
+            logs.write('Total aligned reads in dataset:\n')
             logs.write(str(pysam.view('-c', '-F', '4', self.infile)))
         # Removing temp files  
         deletefiles = [self.infile.replace('.bam', '_R1.bed'), self.infile.replace('.bam', '_R1_seq.bed'), self.infile.replace('.bam', '_R1_seq2.bed'), self.infile.replace('.bam', '_blocks.bed'), self.infile.replace('.bam', '_R1.bam')]
@@ -119,31 +119,88 @@ class IPipeline:
             os.remove(line)
 
     def msp1_clip(self):
-        #MspI soft clipping
+        # Index the BAM file for random access
         pysam.index(self.infile.replace('.bam', '_msp1.bam'))
+    
+        # Open the MspI BAM file for reading
         msp1bamfile = pysam.AlignmentFile(self.infile.replace('.bam', '_msp1.bam'), "rb")
+    
+        # Open a new SAM file to write modified reads
         ModReads = pysam.AlignmentFile(self.infile.replace('.bam', '_msp1_mod.sam'), "wb", template=msp1bamfile)
-        
+    
+        # Iterate over all reads in the BAM file
         for read in msp1bamfile.fetch():
-            if read.is_forward:
-                quals = read.query_qualities
+            # Retrieve query qualities and modify the sequence for forward and reverse reads
+            quals = read.query_qualities
+            if not read.is_reverse:
+                # Modify the sequence and qualities for forward reads (last 3 bases)
                 read.query_sequence = read.query_sequence[:-3] + 'NNN'
-                read.query_qualities = quals[:-3] + array.array('B', [0,0,0])
-                read.set_tags([('NM', read.tags[0][1]),('MD', read.tags[1][1]),
-                               ('XM', read.tags[2][1][:-3] + '...'),
-                               ('XR', read.tags[3][1]),('XG', read.tags[4][1])])
-            if read.is_reverse:
-                quals = read.query_qualities
-                read.query_sequence =  'NNN' + read.query_sequence[3:]
-                read.query_qualities = array.array('B', [0,0,0]) + quals[3:]
-                read.set_tags([('NM', read.tags[0][1]),('MD', read.tags[1][1]),
-                               ('XM', '...' + read.tags[2][1][3:]),
-                               ('XR', read.tags[3][1]),('XG', read.tags[4][1])])
+                read.query_qualities = quals[:-3] + array.array('B', [0, 0, 0])
+            elif read.is_reverse:
+                # Modify the sequence and qualities for reverse reads (first 3 bases)
+                read.query_sequence = 'NNN' + read.query_sequence[3:]
+                read.query_qualities = array.array('B', [0, 0, 0]) + quals[3:]
+        
+            # Update tags using a name-based lookup
+            new_tags = []
+        
+            # Handle NM tag (mismatch count)
+            try:
+                nm_tag = read.get_tag('NM')
+                new_tags.append(('NM', nm_tag))
+            except KeyError:
+                pass  # If NM tag is missing, do nothing
+        
+            # Handle MD tag (mismatch string)
+            try:
+                md_tag = read.get_tag('MD')
+                if not read.is_reverse:
+                    new_tags.append(('MD', md_tag[:-3] + '...'))
+                else:
+                    new_tags.append(('MD', '...' + md_tag[3:]))
+            except KeyError:
+                pass  # If MD tag is missing, do nothing
+            
+            # Handle XM tag (custom tag)
+            try:
+                xm_tag = read.get_tag('XM')
+                if not read.is_reverse:
+                    new_tags.append(('XM', xm_tag[:-3] + '...'))
+                else:
+                    new_tags.append(('XM', '...' + xm_tag[3:]))
+            except KeyError:
+                pass  # If XM tag is missing, do nothing
+        
+            # Handle XR tag (custom tag)
+            try:
+                xr_tag = read.get_tag('XR')
+                new_tags.append(('XR', xr_tag))
+            except KeyError:
+                pass  # If XR tag is missing, do nothing
+            
+            # Handle XG tag (custom tag)
+            try:
+                xg_tag = read.get_tag('XG')
+                new_tags.append(('XG', xg_tag))
+            except KeyError:
+                pass  # If XG tag is missing, do nothing
+            
+            # Set the updated tags on the read
+            read.set_tags(new_tags)
+        
+            # Write the modified read to the output SAM file
             ModReads.write(read)
+        
+        # Close the input and output files
         ModReads.close()
         msp1bamfile.close()
-        os.remove(self.infile.replace('.bam', '_msp1.bam'))
         
+        # Remove the original MspI BAM file as it's no longer needed    
+        os.remove(self.infile.replace('.bam', '_msp1.bam'))
+        os.remove(self.infile.replace('.bam', '_msp1.bam.bai'))
+        
+        
+
     def file_merge(self):
         if self.PE != 0:
             bamfiles = [self.infile.replace('.bam', '_R2.bam'), self.infile.replace('.bam', '_msp1neg.bam'), self.infile.replace('.bam', '_msp1_mod.sam')]
