@@ -106,12 +106,12 @@ class IPipeline:
     def logging(self):
         # Logging
         with open(self.outfile.replace('.bam', '.log'), 'w') as logs:
-            logs.write('Number of unique MspI reads:\n')
+            logs.write('Unique MspI site-aligned reads:\n')
             logs.write(str(len(pybedtools.BedTool(self.infile.replace('.bam', '_blocks.bed')))))
             logs.write('\n')
-            logs.write('Number of MspI reads:\n')
+            logs.write('Total MspI site-aligned reads:\n')
             logs.write(str(pysam.view('-c', '-F', '4', self.infile.replace('.bam', '_msp1.bam'))))
-            logs.write('Number of all reads:\n')
+            logs.write('Total aligned reads in dataset:\n')
             logs.write(str(pysam.view('-c', '-F', '4', self.infile)))
         # Removing temp files  
         deletefiles = [self.infile.replace('.bam', '_R1.bed'), self.infile.replace('.bam', '_R1_seq.bed'), self.infile.replace('.bam', '_R1_seq2.bed'), self.infile.replace('.bam', '_blocks.bed'), self.infile.replace('.bam', '_R1.bam')]
