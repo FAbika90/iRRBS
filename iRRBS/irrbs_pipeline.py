@@ -196,7 +196,8 @@ class IPipeline:
         msp1bamfile.close()
         
         # Remove the original MspI BAM file as it's no longer needed    
-        os.remove(self.infile.replace('.bam', '_msp1.bam', '_msp1.bam.bai'))
+        os.remove(self.infile.replace('.bam', '_msp1.bam'))
+        os.remove(self.infile.replace('.bam', '_msp1.bam.bai'))
         
         
 
