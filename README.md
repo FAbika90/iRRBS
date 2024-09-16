@@ -4,7 +4,7 @@
 
 ## Features
 - Detecting whether the input file is single-read or paired-end
-- Logging the "Number of unique MspI reads", the "Number of MspI reads" and the "Number of all reads"
+- Logging the "Unique MspI site-aligned reads", the "Total MspI site-aligned reads" and the "Total aligned reads in dataset"
 - Outputting a BAM file without the biased cytosines
 
 ## Installation
